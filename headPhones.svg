@@ -1,0 +1,161 @@
+<svg onload="startup(evt)" id="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+    <defs>
+        <style>
+            * {
+            transition: all 300ms ease-in-out;
+            }
+            
+            #headSet:hover .hp {
+                fill: #0000ff;
+            }
+            
+            #headSet:hover .hpHoop {
+                stroke: #0000ff;
+            }
+            
+            #headSet:hover #hoopPath, 
+            #headSet:hover #leftBase, 
+            #headSet:hover #rightBase {
+                animation-play-state: paused;
+            }
+            
+            #hoopPath {
+                animation-name: dash;
+                animation-duration: 1.62s;
+                animation-timing-function: linear;
+                animation-direction: alternate;
+                animation-iteration-count: infinite;
+            }
+            
+            @keyframes dash {
+                to {
+                stroke-dashoffset: 1000;
+                }
+            }
+            
+            #leftBase {
+                animation-name: null;
+                animation-duration: 0.41s;
+                animation-timing-function: linear;
+                animation-direction: alternate;
+                animation-iteration-count: infinite;
+            }
+            
+            #rightBase {
+                animation-name: null;
+                animation-duration: 0.41s;
+                animation-timing-function: linear;
+                animation-direction: alternate;
+                animation-iteration-count: infinite;
+            }
+            
+            @keyframes pump {
+                to {
+                rx: 100;
+                ry: 100;
+                }
+            }
+        </style>
+        <script>
+            function $(tag) { return document.querySelector(tag); }
+            
+            var svgDoc;
+
+            function startup(evt) {
+              svgDoc=evt.target.ownerDocument;
+            }
+            
+            function css (id)
+            {
+                var element = "stop";
+                a="fill";
+                element = svgDoc.getElementById("leftBase");
+                ega=element.getAttribute(a);
+            
+<!--
+                alert(element);
+                alert(ega);
+-->   
+                if (clicked)
+                {
+                    element.setAttribute(a,"green");
+                    element.style.animationName = "pump";
+                    element = svgDoc.getElementById("rightBase");
+                    element.setAttribute(a,"green");
+                    element.style.animationName = "pump";
+                    element = svgDoc.getElementById("hoopPath");
+                    element.setAttribute("stroke","green");
+                    element.setAttribute("stroke-dasharray", "50");
+                    element.setAttribute("animation-name", "dash");
+                    return;
+                }
+                
+                if (!clicked)
+                {
+                    element.setAttribute(a,"black");
+                    element.style.animationName = "null";
+                    element = svgDoc.getElementById("rightBase");
+                    element.setAttribute(a,"black");
+                    element.style.animationName = "null";
+                    element = svgDoc.getElementById("hoopPath");
+                    element.setAttribute("stroke","black");
+                    element.setAttribute("stroke-dasharray", "0");
+                    return;
+                }
+            }
+
+            var clicked = false;
+            var paused = false;            
+        </script>
+        <audio id="audio" xmlns="http://www.w3.org/1999/xhtml">
+            <source src="audio.mp3" type="audio/mpeg" />
+        </audio>
+    </defs>
+<title>My Prototype</title>
+    <g id="headSet" xml:id="headSet" fill="green"
+       onclick="if (!clicked) { 
+                $('audio').currentTime=0; 
+                $('audio').play();
+                clicked=true;
+                css();
+                return; 
+                } 
+
+                clicked=false; 
+                paused=false;
+                css();
+                $('audio').pause(); 
+                $('audio').currentTime=0;"
+
+       onmouseover="if (clicked) { 
+                    $('audio').pause(); 
+                    paused=true;
+                    }" 
+
+       onmouseout="if (paused) { 
+                   paused=false; 
+                   $('audio').play();
+                   }">
+        <!-- -->
+        <g id="leftEar">
+            <ellipse class="hp" id="leftBase" cx="500" cy="500" rx="130" ry="130" fill="#000"></ellipse>
+            <rect x="450" y="300" width="40" height="400" fill="#fff"></rect>
+            <rect x="525" y="300" width="110" height="400" fill="#fff"></rect>
+        </g>
+        <!-- -->
+        <g id="rightEar">
+            <ellipse class="hp" id="rightBase" cx="900" cy="500" rx="130" ry="130" fill="#000"></ellipse>
+            <rect x="910" y="370" width="40" height="260" fill="#fff"></rect>
+            <rect x="765" y="300" width="105" height="410" fill="#fff"></rect>
+        </g>
+        <!--  -->
+        <g id="hoop">
+            <path id="hoopPath" class="hpHoop" d="M 430 430 
+                    c 0 -500 550 -450 
+                    540 0" stroke="#000"
+      stroke-width="40" fill="none"/>
+        </g>
+        <!--  -->
+    </g>    
+
+</svg>
